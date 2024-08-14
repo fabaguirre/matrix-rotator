@@ -1,8 +1,15 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"api/internal/config"
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
+	cfg := config.LoadConfig()
+
 	app := fiber.New()
 
 	app.Get("/status", func(ctx *fiber.Ctx) error {
@@ -13,5 +20,5 @@ func main() {
 		})
 	})
 
-	app.Listen(":4000")
+	log.Fatal(app.Listen(cfg.Port))
 }
