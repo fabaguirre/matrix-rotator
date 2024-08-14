@@ -2,6 +2,7 @@ package main
 
 import (
 	"api/internal/config"
+	"api/internal/matrix"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -19,6 +20,8 @@ func main() {
 			"status":  200,
 		})
 	})
+
+	app.Post("/api/matrix/rotate", matrix.RotateMatrixHandler)
 
 	log.Fatal(app.Listen(cfg.Port))
 }
