@@ -3,9 +3,9 @@ package client
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 type RequestBody struct {
@@ -13,8 +13,7 @@ type RequestBody struct {
 }
 
 func GetMatrixStatistics(rotatedMatrix [][]int) (map[string]interface{}, error) {
-	// url := os.Getenv("API_URL")
-	url := "http://localhost:3000/api/"
+	url := os.Getenv("API_URL")
 	if url == "" {
 		log.Fatalf("La variable de entorno NODE_API_URL no está definida")
 	}
@@ -31,8 +30,6 @@ func GetMatrixStatistics(rotatedMatrix [][]int) (map[string]interface{}, error) 
 	}
 	defer response.Body.Close()
 
-	fmt.Println(response.StatusCode)
-
 	if response.StatusCode != http.StatusOK {
 		log.Printf("Error: received non-200 response status %d\n", response.StatusCode)
 		return nil, err
@@ -42,8 +39,6 @@ func GetMatrixStatistics(rotatedMatrix [][]int) (map[string]interface{}, error) 
 	if err := json.NewDecoder(response.Body).Decode(&stats); err != nil {
 		return nil, err
 	}
-
-	fmt.Println(stats)
 
 	return stats, nil
 }
