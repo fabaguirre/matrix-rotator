@@ -23,9 +23,18 @@ func RotateMatrixHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to send data to Node.js API"})
 	}
 
+	Q, R, err := QRDecomposition(req.Matrix)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to compute QR decomposition"})
+	}
+
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
 		"success": true,
 		"data": fiber.Map{
+			"qrDecomposition": &fiber.Map{
+				"Q": Q.RawMatrix().Data,
+				"R": R.RawMatrix().Data,
+			},
 			"rotatedMatrix": rotatedMatrix,
 			"stats":         stats,
 		},
