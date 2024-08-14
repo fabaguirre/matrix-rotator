@@ -1,6 +1,8 @@
 package matrix
 
 import (
+	client "api/internal/network"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -14,11 +16,19 @@ func RotateMatrixHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	result := RotateMatrix(req.Matrix)
+	rotatedMatrix := RotateMatrix(req.Matrix)
+
+	stats, e2 := client.GetMatrixStatistics(rotatedMatrix)
+	if e2 != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to send data to Node.js API"})
+	}
 
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
 		"success": true,
-		"data":    result,
-		"status":  fiber.StatusOK,
+		"data": fiber.Map{
+			"rotatedMatrix": rotatedMatrix,
+			"stats":         stats,
+		},
+		"status": fiber.StatusOK,
 	})
 }
