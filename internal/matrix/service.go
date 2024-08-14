@@ -1,15 +1,19 @@
 package matrix
 
 func RotateMatrix(matrix [][]int) [][]int {
-	n := len(matrix)
-	result := make([][]int, n)
+	rows := len(matrix)
+	cols := len(matrix[0])
+
+	result := make([][]int, cols)
 	for i := range result {
-		result[i] = make([]int, n)
+		result[i] = make([]int, rows)
 	}
-	for i := 0; i < n; i++ {
-		for j := 0; j < n; j++ {
-			result[j][n-1-i] = matrix[i][j]
+
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			result[j][rows-i-1] = matrix[i][j]
 		}
 	}
+
 	return result
 }
