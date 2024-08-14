@@ -14,9 +14,11 @@ func RotateMatrixHandler(c *fiber.Ctx) error {
 		})
 	}
 
+	result := RotateMatrix(req.Matrix)
+
 	return c.Status(fiber.StatusOK).JSON(&fiber.Map{
 		"success": true,
-		"data":    req.Matrix,
+		"data":    result,
 		"status":  fiber.StatusOK,
 	})
 }
