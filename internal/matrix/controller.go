@@ -18,8 +18,8 @@ func RotateMatrixHandler(c *fiber.Ctx) error {
 
 	rotatedMatrix := RotateMatrix(req.Matrix)
 
-	stats, e2 := client.GetMatrixStatistics(rotatedMatrix)
-	if e2 != nil {
+	stats, err := client.GetMatrixStatistics(rotatedMatrix)
+	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to send data to Node.js API"})
 	}
 
