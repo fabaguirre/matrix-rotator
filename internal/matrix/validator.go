@@ -5,13 +5,17 @@ import (
 )
 
 func validateMatrix(matrix [][]int) error {
-	length := len(matrix[0])
-	if length == 0 {
+	if len(matrix) == 0 {
 		return fiber.NewError(fiber.StatusBadRequest, "Matrix cannot be empty")
 	}
+	rowsLength := len(matrix[0])
 
-	for i := 0; i < len(matrix); i++ {
-		if len(matrix[i]) != length {
+	if rowsLength == 0 {
+		return fiber.NewError(fiber.StatusBadRequest, "Matrix rows cannot be empty")
+	}
+
+	for i := 0; i < rowsLength; i++ {
+		if len(matrix[i]) != rowsLength {
 			return fiber.NewError(fiber.StatusBadRequest, "Matrix rows must have the same length")
 		}
 	}
