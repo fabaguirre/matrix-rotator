@@ -4,15 +4,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// func isSquareMatrix(matrix [][]int) bool {
-// 	n := len(matrix)
-// 	for _, row := range matrix {
-// 		if len(row) != n {
-// 			return false
-// 		}
-// 	}
-// 	return true
-// }
+func validateMatrix(matrix [][]int) error {
+	length := len(matrix[0])
+	if length == 0 {
+		return fiber.NewError(fiber.StatusBadRequest, "Matrix cannot be empty")
+	}
+
+	for i := 0; i < len(matrix); i++ {
+		if len(matrix[i]) != length {
+			return fiber.NewError(fiber.StatusBadRequest, "Matrix rows must have the same length")
+		}
+	}
+
+	return nil
+}
 
 func ParseAndValidateMatrixRequest(c *fiber.Ctx) (*MatrixRequest, error) {
 	var req MatrixRequest
@@ -20,9 +25,9 @@ func ParseAndValidateMatrixRequest(c *fiber.Ctx) (*MatrixRequest, error) {
 		return nil, fiber.NewError(fiber.StatusBadRequest, "Invalid input")
 	}
 
-	// if !isSquareMatrix(req.Matrix) {
-	// 	return nil, fiber.NewError(fiber.StatusBadRequest, "Matrix must be square")
-	// }
+	if err := validateMatrix(req.Matrix); err != nil {
+		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
 
 	return &req, nil
 }
