@@ -1,16 +1,22 @@
 package main
 
 import (
-	"api/internal/config"
 	"api/internal/matrix"
+
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	cfg := config.LoadConfig()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
+	port := os.Getenv("PORT")
 	app := fiber.New()
 
 	app.Get("/status", func(ctx *fiber.Ctx) error {
@@ -23,5 +29,5 @@ func main() {
 
 	app.Post("/api/matrix/rotate", matrix.RotateMatrixHandler)
 
-	log.Fatal(app.Listen(cfg.Port))
+	log.Fatal(app.Listen(":" + port))
 }
