@@ -40,8 +40,9 @@ func QRDecomposition(matrix [][]int) (
 	var qr mat.QR
 	qr.Factorize(A)
 
-	Q := mat.NewDense(rows, rows, nil)
-	R := mat.NewDense(rows, cols, nil)
+	var Q *mat.Dense = new(mat.Dense)
+	var R *mat.Dense = new(mat.Dense)
+
 	qr.QTo(Q)
 	qr.RTo(R)
 
