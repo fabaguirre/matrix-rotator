@@ -8,14 +8,15 @@ func validateMatrix(matrix [][]int) error {
 	if len(matrix) == 0 {
 		return fiber.NewError(fiber.StatusBadRequest, "Matrix cannot be empty")
 	}
-	rowsLength := len(matrix[0])
+	rowsLength := len(matrix)
+	colsLength := len(matrix[0])
 
 	if rowsLength == 0 {
 		return fiber.NewError(fiber.StatusBadRequest, "Matrix rows cannot be empty")
 	}
 
 	for i := 0; i < rowsLength; i++ {
-		if len(matrix[i]) != rowsLength {
+		if len(matrix[i]) != colsLength {
 			return fiber.NewError(fiber.StatusBadRequest, "Matrix rows must have the same length")
 		}
 	}
