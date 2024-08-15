@@ -15,6 +15,10 @@ func validateMatrix(matrix [][]int) error {
 		return fiber.NewError(fiber.StatusBadRequest, "Matrix rows cannot be empty")
 	}
 
+	if colsLength > rowsLength {
+		return fiber.NewError(fiber.StatusBadRequest, "Rows length must be greater or equal to columns length")
+	}
+
 	for i := 0; i < rowsLength; i++ {
 		if len(matrix[i]) != colsLength {
 			return fiber.NewError(fiber.StatusBadRequest, "Matrix rows must have the same length")
