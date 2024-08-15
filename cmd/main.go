@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
 )
 
@@ -18,6 +19,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	app := fiber.New()
+	app.Use(cors.New())
 
 	app.Get("/status", func(ctx *fiber.Ctx) error {
 		return ctx.JSON(&fiber.Map{
